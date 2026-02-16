@@ -1,5 +1,9 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import './App.css' // חיבור לקובץ העיצוב החדש
+import { ToastContainer, toast } from 'react-toastify'; // ייבוא ההתראות
+import 'react-toastify/dist/ReactToastify.css'; // עיצוב של ההתראות
+import { FaTrash, FaUserPlus, FaUserGraduate } from 'react-icons/fa'; // אייקונים
 
 function App() {
     const [students, setStudents] = useState([])
@@ -10,7 +14,7 @@ function App() {
             const response = await axios.get('http://localhost:8080/api/students')
             setStudents(response.data)
         } catch (error) {
-            console.error("Error fetching students:", error)
+            toast.error("שגיאה בטעינת הנתונים מהשרת")
         }
     }
 
@@ -28,41 +32,46 @@ function App() {
             await axios.post('http://localhost:8080/api/students', newStudent)
             setNewStudent({ firstName: '', lastName: '', email: '' })
             fetchStudents()
+            // הודעה יפה במקום Alert
+            toast.success("סטודנט נוסף בהצלחה! 🎓")
         } catch (error) {
-            alert("שגיאה: וודא שהאימייל תקין וכל השדות מלאים!")
+            toast.error("שגיאה: בדוק שהאימייל תקין!")
         }
     }
 
-    // הפונקציה החדשה למחיקה
     const handleDelete = async (id) => {
-        if (window.confirm("בטוח שברצונך למחוק את הסטודנט?")) {
+        if (window.confirm("בטוח שברצונך למחוק?")) {
             try {
                 await axios.delete(`http://localhost:8080/api/students/${id}`)
-                fetchStudents() // מרענן את הרשימה אחרי המחיקה
+                fetchStudents()
+                toast.info("הסטודנט נמחק מהמערכת")
             } catch (error) {
-                console.error("Error deleting student:", error)
+                toast.error("לא ניתן למחוק את הסטודנט")
             }
         }
     }
 
     return (
-        <div style={{ padding: '40px', fontFamily: 'Arial', textAlign: 'center', direction: 'rtl' }}>
-            <h1>ניהול סטודנטים - Full Stack</h1>
+        <div className="container" dir="rtl">
+            {/* רכיב ההתראות - חייב להיות בדף כדי שזה יעבוד */}
+            <ToastContainer position="top-center" autoClose={3000} />
 
-            {/* טופס הוספה */}
-            <div style={{ marginBottom: '30px', padding: '20px', border: '1px solid #ddd', borderRadius: '8px', display: 'inline-block' }}>
-                <form onSubmit={handleSubmit}>
-                    <input type="text" name="firstName" placeholder="שם פרטי" value={newStudent.firstName} onChange={handleChange} required style={{ margin: '5px', padding: '8px' }} />
-                    <input type="text" name="lastName" placeholder="שם משפחה" value={newStudent.lastName} onChange={handleChange} required style={{ margin: '5px', padding: '8px' }} />
-                    <input type="email" name="email" placeholder="אימייל" value={newStudent.email} onChange={handleChange} required style={{ margin: '5px', padding: '8px' }} />
-                    <button type="submit" style={{ padding: '10px', backgroundColor: '#28a745', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>הוסף</button>
-                </form>
-            </div>
+            <h1><FaUserGraduate /> מערכת ניהול סטודנטים</h1>
 
-            {/* טבלה מעודכנת */}
-            <table border="1" style={{ width: '80%', margin: '0 auto', borderCollapse: 'collapse' }}>
+            {/* טופס מעוצב */}
+            <form onSubmit={handleSubmit} className="form-container">
+                <input type="text" name="firstName" placeholder="שם פרטי" value={newStudent.firstName} onChange={handleChange} required />
+                <input type="text" name="lastName" placeholder="שם משפחה" value={newStudent.lastName} onChange={handleChange} required />
+                <input type="email" name="email" placeholder="אימייל" value={newStudent.email} onChange={handleChange} required />
+                <button type="submit" className="add-btn">
+                    <FaUserPlus /> הוסף
+                </button>
+            </form>
+
+            {/* טבלה מעוצבת */}
+            <table>
                 <thead>
-                <tr style={{ backgroundColor: '#f2f2f2' }}>
+                <tr>
                     <th>ID</th>
                     <th>שם פרטי</th>
                     <th>שם משפחה</th>
@@ -78,11 +87,8 @@ function App() {
                         <td>{student.lastName}</td>
                         <td>{student.email}</td>
                         <td>
-                            <button
-                                onClick={() => handleDelete(student.id)}
-                                style={{ backgroundColor: '#dc3545', color: 'white', border: 'none', padding: '5px 10px', cursor: 'pointer', borderRadius: '4px' }}
-                            >
-                                מחק
+                            <button onClick={() => handleDelete(student.id)} className="delete-btn" title="מחק סטודנט">
+                                <FaTrash />
                             </button>
                         </td>
                     </tr>
