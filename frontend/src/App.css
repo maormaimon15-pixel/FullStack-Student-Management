@@ -1,4 +1,4 @@
-/* App.css */
+/* הגדרות כלליות */
 body {
   background-color: #f0f2f5;
   margin: 0;
@@ -19,12 +19,71 @@ body {
   text-align: center;
 }
 
-h1 {
-  color: #333;
-  margin-bottom: 30px;
+/* כותרת וכפתור ייצוא */
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
-/* טופס */
+h1 {
+  color: #333;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.export-btn {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background 0.3s;
+  height: 40px;
+}
+
+.export-btn:hover {
+  background-color: #218838;
+}
+
+/* איזור חיפוש */
+.search-container {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.search-input {
+  width: 95%;
+  padding: 12px 40px 12px 10px; /* מקום לאייקון מימין */
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  outline: none;
+  font-size: 16px;
+  transition: 0.3s;
+}
+
+.search-input:focus {
+  border-color: #4a90e2;
+  box-shadow: 0 0 5px rgba(74, 144, 226, 0.3);
+}
+
+.search-icon {
+  position: absolute;
+  top: 13px;
+  right: 15px;
+  color: #888;
+  font-size: 18px;
+}
+
+/* טופס הוספה */
 .form-container {
   display: flex;
   gap: 10px;
