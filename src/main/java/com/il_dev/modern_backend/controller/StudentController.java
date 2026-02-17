@@ -29,8 +29,12 @@ public class StudentController {
     public void deleteStudent(@PathVariable Long id) {
         studentService.deleteStudent(id); // וודא שהשירות שלך תומך בזה
     }
-    @PutMapping("/{id}")
-    public Student updateStudent(@PathVariable Long id,@Valid @RequestBody Student studentDetails) {
-        return studentService.updateStudent(id, studentDetails);
-    }
+    // הוסף את החלק הזה בתוך StudentController.java
+
+
+@PutMapping("/{id}")
+public Student updateStudent(@PathVariable Long id, @RequestBody Student studentDetails) {
+    // התיקון: אנחנו משתמשים ב-Service הקיים במקום ב-Repository החסר
+    return studentService.updateStudent(id, studentDetails);
+}
 }
